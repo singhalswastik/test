@@ -13,6 +13,13 @@ const addone = (newItem) => {
     )
     .catch((res) => `Error: ${res}`);
 };
+const findone = (query) => {
+  return Promise.resolve()
+    .then(() =>
+      client.db("testDb").collection("testCollection").findOne(query)
+    )
+    .catch((res) => `Error: ${res}`);
+};
 const update = (id, newItem,upsertValue) => {
   return Promise.resolve()
     .then(() =>
@@ -44,3 +51,4 @@ exports.connect = connect;
 exports.addone = addone;
 exports.update = update;
 exports.delete = del;
+exports.findone = findone;

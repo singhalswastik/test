@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 app.get("/", (request, response) => {
   console.log(request.query);
-  database.addone(request.query).then((res) => console.log(res));
+  database.findone(request.query).then((res) => console.log(res));
   response.send("Got a GET request");
 });
 
