@@ -2,24 +2,17 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
 const database = require("./database");
+const middleware = require("./middleware");
 
 database
   .connect()
   .then(() => console.log("Connected to database"))
   .catch((res) => console.log(`Error: ${res}`));
 
-const urlLogger = (request, response, next) => {
-  console.log("Request URL:", request.url);
-  next();
-};
-const timeLogger = (request, response, next) => {
-  console.log("Datetime:", new Date(Date.now()).toString());
-  next();
-};
-
-app.use(urlLogger, timeLogger);
+app.use(middleware.urlLogger, middleware.timeLogger);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(middleware.checkPost);
 
 app.get("/", (request, response) => {
   console.log(request.query);
@@ -32,7 +25,7 @@ app.get("/", (request, response) => {
     .catch((res) => console.log(`Error: ${res}`));
 });
 
-app.post("/", function (request, response) {
+app.post("/", (request, response) => {
   console.log(request.body);
   database
     .addone(request.body)
@@ -43,7 +36,7 @@ app.post("/", function (request, response) {
     .catch((res) => console.log(`Error: ${res}`));
 });
 
-app.patch("/:id", function (request, response) {
+app.patch("/:id", (request, response) => {
   console.log(request.body);
   database
     .update(request.params.id, request.body)
@@ -54,7 +47,7 @@ app.patch("/:id", function (request, response) {
     .catch((res) => console.log(`Error: ${res}`));
 });
 
-app.put("/:id", function (request, response) {
+app.put("/:id", (request, response) => {
   console.log(request.body);
   database
     .update(request.params.id, request.body)
@@ -65,7 +58,7 @@ app.put("/:id", function (request, response) {
     .catch((res) => console.log(`Error: ${res}`));
 });
 
-app.delete("/:id", function (request, response) {
+app.delete("/:id", (request, response) => {
   console.log(request.body);
   database
     .delete(request.params.id)
