@@ -8,19 +8,15 @@ const timeLogger = (request, response, next) => {
   next();
 };
 const checkPost = (request, response, next) => {
-  if (request.method == "POST") {
-    database.findone({ email: request.body.email }).then((res) => {
-      if (res != null) {
-        response.send(
-          "This email is already in use. please try with something else."
-        );
-      } else {
-        next();
-      }
-    });
-  } else {
-    next();
-  }
+  database.findone({ email: request.body.email }).then((res) => {
+    if (res != null) {
+      response.send(
+        "This email is already in use. please try with something else."
+      );
+    } else {
+      next();
+    }
+  });
 };
 exports.urlLogger = urlLogger;
 exports.timeLogger = timeLogger;

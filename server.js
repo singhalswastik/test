@@ -12,7 +12,6 @@ database
 app.use(middleware.urlLogger, middleware.timeLogger);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(middleware.checkPost);
 
 app.get("/", (request, response) => {
   console.log(request.query);
@@ -25,7 +24,7 @@ app.get("/", (request, response) => {
     .catch((res) => console.log(`Error: ${res}`));
 });
 
-app.post("/", (request, response) => {
+app.post("/",[middleware.checkPost], (request, response) => {
   console.log(request.body);
   database
     .addone(request.body)
